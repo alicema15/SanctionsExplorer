@@ -3,7 +3,7 @@ import sentry_sdk
 import logging
 import credentials
 
-sentry_sdk.init(credentials.sentry)
+# sentry_sdk.init(credentials.sentry)
 
 
 def write_json(outfile, data):

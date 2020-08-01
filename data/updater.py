@@ -1,5 +1,6 @@
 from urllib.request import urlretrieve
 from sys import argv
+import sys
 from datetime import datetime
 
 import importlib
@@ -98,27 +99,27 @@ if should_download:
     download_and_parse(SDN_URL, SDN_XML_FILE, SDN_JSON)
     sdn_parser = importlib.reload(sdn_parser)                       # TODO this is horrible and hacky and needs to be removed
     download_and_parse(NONSDN_URL, NONSDN_XML_FILE, NONSDN_JSON)
-    subprocess.call(SEND_TO_GCS, shell=True)
-    log('Send to GCS...', 'info')
+    # subprocess.call(SEND_TO_GCS, shell=True)
+    # log('Send to GCS...', 'info')
 
-    log('Scraping press releases from this year...', 'info')
-    scrape_prs.scrape_current_year(PR_JSON)
+    # log('Scraping press releases from this year...', 'info')
+    # scrape_prs.scrape_current_year(PR_JSON)
 
-run_nodejs(EXPORT_SDN, 'export SDN and non-SDN to Elastic')
-run_nodejs(EXPORT_PRS, 'export PRs to Elastic')
+# run_nodejs(EXPORT_SDN, 'export SDN and non-SDN to Elastic')
+# run_nodejs(EXPORT_PRS, 'export PRs to Elastic')
 
-log('Matching SDN entities with press release data...', 'info')
-matcher.write_pr_matches(PR_MATCHES)
-run_nodejs(EXPORT_MATCHES, 'export PR matches to Elastic')
+# log('Matching SDN entities with press release data...', 'info')
+# matcher.write_pr_matches(PR_MATCHES)
+# run_nodejs(EXPORT_MATCHES, 'export PR matches to Elastic')
 
-# If we've successfully made it this far, we write this for next time.
-serialize_feed(feed, OLD_RSS_FILE)
+# # If we've successfully made it this far, we write this for next time.
+# serialize_feed(feed, OLD_RSS_FILE)
 
-# Now do ID matching since it takes so long.
-log('Scraping IDs from the OFAC website...', 'info')
-scrape_ofac.write_ofac_ids(OFAC_INT, OFAC_IDS)
+# # Now do ID matching since it takes so long.
+# log('Scraping IDs from the OFAC website...', 'info')
+# scrape_ofac.write_ofac_ids(OFAC_INT, OFAC_IDS)
 
-log('Matching SDN entities with their IDs on the OFAC website...', 'info')
-matcher.write_ofac_id_matches(OFAC_IDS, OFAC_MATCHES)
-run_nodejs(EXPORT_IDS, 'export ID matches to Elastic')
+# log('Matching SDN entities with their IDs on the OFAC website...', 'info')
+# matcher.write_ofac_id_matches(OFAC_IDS, OFAC_MATCHES)
+# run_nodejs(EXPORT_IDS, 'export ID matches to Elastic')
 
